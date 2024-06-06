@@ -482,17 +482,15 @@ def process_images(hypes, savename, image_orig, detected, var, gt=None, out_res=
         circles = []
         
 
-        circles = []
-
         for contour in contours:
             # Fit a minimum enclosing circle to each contour
-            (x, y), radius = cv2.minEnclosingCircle(contour)
+            (y, x), radius = cv2.minEnclosingCircle(contour)
 
             # Convert center coordinates and radius to integers
             center = (int(x), int(y))
-            radius = int(radius) /int(2)
+            radius = int(radius)
 
-            circles.append((center, radius))
+        circles.append((center, radius))
         
         big_list = []
 
@@ -519,7 +517,7 @@ def process_images(hypes, savename, image_orig, detected, var, gt=None, out_res=
         cv2.drawContours(image, [largest_contour], -1, (0, 255, 0), 2)
 
         # Draw the minimum enclosing circle in red
-        cv2.circle(image, center, int(round(radius)), (255, 0, 0), 2)
+        cv2.circle(image, center, radius, (255, 0, 0), 2)
 
         # Display the image
         plt.imshow(image, cmap='gray')

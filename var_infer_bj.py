@@ -13,6 +13,8 @@ if sys_pf == 'darwin':
 from utils import is_image_file, pil_loader, process_images, normalize_tensor
 from HRNet import HRNet_dropout, HRNet_var
 
+print('imported')
+
 def setup(rank, world_size):
     os.environ['MASTER_ADDR'] = 'localhost'
     os.environ['MASTER_PORT'] = '29501'
@@ -20,7 +22,9 @@ def setup(rank, world_size):
     dist.init_process_group("nccl", rank=rank, world_size=world_size)
 
 
-if __name__ == '__main__':
+def start():
+    
+    print("start function called")
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     if dist.is_available():
@@ -28,7 +32,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Inference on images for Capsule Segmentation (SegCaps)")
     parser.add_argument('--model', type=str, default='saved/HRNet_var/21-12-28[17.09]/', help='Path to directory with model file and hypes.json [required]')
-    parser.add_argument('--image', type=str, help='Path to image to run inference on [required]')
+    parser.add_argument('--image', type=str, default = 'placeholder', help='Path to image to run inference on [required]')
     parser.add_argument('--gt', type=str, help='Optional path to ground truth file, will return confusion matrix.')
     parser.add_argument('--target', type=int, default=1, help='Optional target class, default to 0.')
     parser.add_argument('--n_MC', type=int, default=24, help='Optional number of times to run the image, default 16.')
@@ -64,6 +68,10 @@ if __name__ == '__main__':
         transforms.Normalize(hypes['data']['pop_mean'], hypes['data']['pop_std0'])
         ]
     )
+    
+    # BJKIM
+    # print(png_file_path)
+    # args.image = png_file_path
 
     print('image file is ', args.image)
     if is_image_file(args.image):
@@ -142,6 +150,8 @@ if __name__ == '__main__':
                                 str(bayesMethod + '_' + os.path.splitext(os.path.basename(args.image))[0]))
 
         os.makedirs(os.path.dirname(savename), mode=0o755, exist_ok=True)
-        fscore, circle_info_list = process_images(hypes, savename, image_orig, out, var, args.gt, input_res,
+        _, circle_info_list = process_images(hypes, savename, image_orig, out, var, args.gt, input_res,
                                 threshold=args.thresh, printout=True)
+        
+        return circle_info_list
         
