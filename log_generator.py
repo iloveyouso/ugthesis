@@ -117,7 +117,7 @@
 #     # circle_data = [5, [50, 50, 30], [100, 100, 40], [150, 150, 50], [200, 200, 60], [250, 250, 70]]
 #     generate_apdl_script(circle_data)
 
-def generate_apdl_script(circle_data):
+def generate_apdl_script(circle_data,path):
     num_circles = circle_data[0]
     circles = circle_data[1:]
     
@@ -242,10 +242,11 @@ SET, LAST
 PLNSOL, S,EQV, 0,1.0
 """
     
-    with open("APDL_scipt.apdl", "w") as file:
+    file_name = path+"_APDL_scipt.apdl"
+    with open(file_name, "w") as file:
         file.write(script)
     
-    print("APDL script generated. file name: APDL_scipt.apdl" )
+    print("APDL script generated. file name: ",file_name )
         
 if __name__ == "__main__":
     # 새로운 원 데이터를 사용합니다.

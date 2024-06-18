@@ -37,6 +37,7 @@ if len(sys.argv) < 2:
 png_file = sys.argv[2]
 print(f"Processing {png_file}...")
 
+path = png_file.replace("images/", "").replace(".png", "")
 
 # # Assuming circle_data is defined somewhere
 # circle_data = [5, [50, 50, 30], [100, 100, 40], [150, 150, 50], [200, 200, 60], [250, 250, 70]]
@@ -48,7 +49,7 @@ print('returned from var_infer.py is: ', str(circle_data))
 mapped_circle_data = map_circle_data(circle_data)
 print('mapped_circle_data is: ', str(mapped_circle_data))
 
-generate_apdl_script(mapped_circle_data)
+generate_apdl_script(mapped_circle_data,path)
 
 # ########### OPTION 2 #########
 

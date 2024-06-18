@@ -489,7 +489,7 @@ def process_images(hypes, savename, image_orig, detected, var, gt=None, out_res=
             (x, y), radius = cv2.minEnclosingCircle(contour)
 
             # Convert center coordinates and radius to integers
-            center = (int(x), int(y))
+            center = (int(y), int(x))
             radius = int(radius) /int(2)
 
             circles.append((center, radius))
